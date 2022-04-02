@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 
 public class Bar : MonoBehaviour {
-    public float decayRate = 1.0f;
+    public float decayRate;
+    public float lifetime;
     public float value
     {
         get { return _value; }
@@ -36,6 +37,12 @@ public class Bar : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        value -= decayRate * Time.deltaTime;
+        float decayAmount = decayRate * Time.deltaTime;
+        if (decayAmount < value) {
+            lifetime += Time.deltaTime;
+        } else {
+            lifetime += value / decayRate;
+        }
+        value -= decayAmount;
     }
 }

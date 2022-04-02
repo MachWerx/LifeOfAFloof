@@ -18,7 +18,9 @@ public class Button : MonoBehaviour {
         _collisionTransform = GetComponentInChildren<Collider>().transform;
         _initialPos = transform.localPosition;
         _pressedPos = _initialPos + 0.1f * Vector3.forward;
-        _initialColor = _material.GetColor("_EmissionColor");
+        if (_material.HasProperty("_EmissionColor")) {
+           _initialColor = _material.GetColor("_EmissionColor");
+        }
     }
 
     // Update is called once per frame
@@ -26,13 +28,17 @@ public class Button : MonoBehaviour {
         if (_buttonPressed) {
             _timeout += Time.deltaTime / TimeoutPeriod;
             transform.localPosition = Vector3.Lerp(_pressedPos, _initialPos, _timeout);
-            _material.SetColor("_EmissionColor", 0.5f * _timeout * _initialColor);
+            if (_material.HasProperty("_EmissionColor")) {
+                _material.SetColor("_EmissionColor", 0.5f * _timeout * _initialColor);
+            }
             if (_timeout >= 1.0f) {
                 // button released
                 _timeout = 1.0f;
                 _buttonPressed = false;
                 transform.localPosition = _initialPos;
-                _material.SetColor("_EmissionColor", _initialColor);
+                if (_material.HasProperty("_EmissionColor")) {
+                    _material.SetColor("_EmissionColor", _initialColor);
+                }
             }
         }
         else if (Input.GetMouseButtonDown(0)) {
