@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Button : MonoBehaviour {
     public float TimeoutPeriod = 1.0f;
+    public Action OnButtonPressed;
 
     private float _timeout;
     private Material _material;
@@ -13,9 +13,7 @@ public class Button : MonoBehaviour {
     private Color _initialColor;
     private bool _buttonPressed;
 
-
-    // Start is called before the first frame update
-    void Start() {
+    private void Awake() {
         _material = GetComponentInChildren<Renderer>().material;
         _collisionTransform = GetComponentInChildren<Collider>().transform;
         _initialPos = transform.localPosition;
@@ -47,6 +45,7 @@ public class Button : MonoBehaviour {
                     _timeout = 0;
                     transform.localPosition = _pressedPos;
                     _material.SetColor("_EmissionColor", Color.black);
+                    OnButtonPressed?.Invoke();
                 }
             }
         }

@@ -3,20 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    [SerializeField] private GameObject _healthBar;
-    [SerializeField] private GameObject _energyBar;
-    [SerializeField] private GameObject _contentmentBar;
+    [SerializeField] private Bar _healthBar;
+    [SerializeField] private Bar _energyBar;
+    [SerializeField] private Bar _contentmentBar;
 
-    private float _health = 100;
+    [SerializeField] private Button _healthButton;
+    [SerializeField] private Button _energyButton;
+    [SerializeField] private Button _contentmentButton;
 
     // Start is called before the first frame update
     void Start() {
-        
+        _healthBar.value = 1.0f;
+        _healthBar.decayRate = 0.2f;
+        _healthButton.OnButtonPressed += OnHealthButtonPressed;
     }
 
     // Update is called once per frame
     void Update() {
-        _health -= 1.0f * Time.deltaTime;
-        _healthBar.transform.localScale = new Vector3(_health / 100.0f, 1, 1);
+    }
+
+    void OnHealthButtonPressed() {
+        _healthBar.value += 0.1f;
     }
 }
