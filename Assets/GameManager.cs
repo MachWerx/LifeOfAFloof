@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private Button _energyButton;
     [SerializeField] private Button _contentmentButton;
 
+    [SerializeField] private Transform _sunAxis;
+
     private enum GameMode {
         Menu,
         GameIntro,
@@ -33,6 +35,13 @@ public class GameManager : MonoBehaviour {
     private GameMode _gameMode;
 
     private int _gameStage;
+    private float _sunAngle = 0;
+    private float _initialAtmosphereThickness;
+    private float kSunsetPeriod = 3.0f;
+    private float kSunrisePeriod = 1.0f;
+    private float kSunsetAngle = 120.0f;
+    private float kDayAtmosphereThickness = 0.5f;
+    private float kSettingAtmosphereThickness = 1.25f;
 
     // Start is called before the first frame update
     void Start() {
@@ -47,10 +56,35 @@ public class GameManager : MonoBehaviour {
 
         _gameMode = GameMode.GameOutro;
         SetGameMode(GameMode.Menu);
+
+        _initialAtmosphereThickness = RenderSettings.skybox.GetFloat("_AtmosphereThickness");
+    }
+
+    private void OnDestroy()
+    {
+        RenderSettings.skybox.SetFloat("_AtmosphereThickness", _initialAtmosphereThickness);
     }
 
     // Update is called once per frame
     void Update() {
+        if (_gameMode == GameMode.GameIntro) {
+            _sunAngle -= Time.deltaTime * kSunsetAngle / kSunrisePeriod;
+            if (_sunAngle < 0)  {
+                _sunAngle = 0;
+            }
+            _sunAxis.transform.localEulerAngles = new Vector3(_sunAngle, 0, 0);
+            float atmosphere = Mathf.Lerp(kDayAtmosphereThickness, kSettingAtmosphereThickness, _sunAngle / kSunsetAngle);
+            RenderSettings.skybox.SetFloat("_AtmosphereThickness", atmosphere);
+        }
+        else if (_gameMode == GameMode.GameOutro) {
+            _sunAngle += Time.deltaTime * kSunsetAngle / kSunsetPeriod;
+            if (_sunAngle > kSunsetAngle) {
+                _sunAngle = kSunsetAngle;
+            }
+            _sunAxis.transform.localEulerAngles = new Vector3(_sunAngle, 0, 0);
+            float atmosphere = Mathf.Lerp(kDayAtmosphereThickness, kSettingAtmosphereThickness, _sunAngle / kSunsetAngle);
+            RenderSettings.skybox.SetFloat("_AtmosphereThickness", atmosphere);
+        }
     }
 
     void SetGameMode(GameMode mode)
