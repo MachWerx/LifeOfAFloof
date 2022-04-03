@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
+    [SerializeField] private Camera _mainCam;
+
     [SerializeField] private Button _newGameButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _revisitButton;
@@ -39,11 +41,13 @@ public class GameManager : MonoBehaviour {
     private float _sunAngle = 0;
     private float _initialAtmosphereThickness;
     private bool _ascensionUnlocked = false;
+    private float _ascensionTime = 0.0f;
     private float kSunsetPeriod = 5.0f;
     private float kSunrisePeriod = 1.0f;
     private float kSunsetAngle = 120.0f;
     private float kDayAtmosphereThickness = 0.5f;
     private float kSettingAtmosphereThickness = 1.25f;
+    private float kAscensionPeriod = 5.0f;
 
     private float _healthBoost = 0.1f;
 
@@ -64,10 +68,11 @@ public class GameManager : MonoBehaviour {
 
         _contentmentBar.OnBarFull += OnContentmentBarFull;
 
+        _initialAtmosphereThickness = RenderSettings.skybox.GetFloat("_AtmosphereThickness");
+
         _gameMode = GameMode.GameOutro;
         SetGameMode(GameMode.Menu);
 
-        _initialAtmosphereThickness = RenderSettings.skybox.GetFloat("_AtmosphereThickness");
     }
 
     private void OnDestroy()
@@ -116,6 +121,27 @@ public class GameManager : MonoBehaviour {
                     _healthButton.timeoutPeriod = 0.5f;
                 }
             }
+        } else if (_gameMode == GameMode.Ascending) {
+            _sunAngle += Time.deltaTime * kSunsetAngle / kSunsetPeriod;
+            if (_sunAngle < kSunsetAngle)
+            {
+                float atmosphere = Mathf.Lerp(kDayAtmosphereThickness, kSettingAtmosphereThickness, _sunAngle / kSunsetAngle);
+                RenderSettings.skybox.SetFloat("_AtmosphereThickness", atmosphere);
+            }
+            else if (_sunAngle < 2 * kSunsetAngle)
+            {
+                float atmosphere = Mathf.Lerp(kDayAtmosphereThickness, kSettingAtmosphereThickness, 2 - _sunAngle / kSunsetAngle);
+                RenderSettings.skybox.SetFloat("_AtmosphereThickness", atmosphere);
+            }
+            else
+            {
+                _sunAngle = 2 * kSunsetAngle;
+            }
+            _sunAxis.transform.localEulerAngles = new Vector3(_sunAngle, 0, 0);
+
+            _ascensionTime += Time.deltaTime / kAscensionPeriod;
+            _mainCam.transform.localEulerAngles = new Vector3(
+                Mathf.SmoothStep(10, -45, _ascensionTime), 0, 0);
         }
     }
 
@@ -125,7 +151,9 @@ public class GameManager : MonoBehaviour {
             return;
         }
 
-        // deactivate everything unless we're about to start a game
+        // reset everything unless we're about to start a game
+        RenderSettings.skybox.SetFloat("_AtmosphereThickness", _initialAtmosphereThickness);
+        _mainCam.transform.localEulerAngles = new Vector3(10, 0, 0);
         _mainMenu.SetActive(false);
         _continueButton.gameObject.SetActive(false);
         _revisitButton.gameObject.SetActive(false);
@@ -149,6 +177,10 @@ public class GameManager : MonoBehaviour {
                 if (_gameStage != 1) {
                     _continueButton.gameObject.SetActive(true);
                 }
+                _healthBar.value = 1;
+                _sunAngle = 0;
+                _sunAxis.transform.localEulerAngles = new Vector3(_sunAngle, 0, 0);
+                RenderSettings.skybox.SetFloat("_AtmosphereThickness", kDayAtmosphereThickness);
                 break;
             case GameMode.GameIntro:
                 _dialogBox.SetActive(true);
@@ -188,7 +220,6 @@ public class GameManager : MonoBehaviour {
                 _energyBar.value = 1;
                 _energyBar.decayRate = -1.0f;
                 _contentmentBar.value = 0;
-                //_contentmentBar.decayRate = -1.0f / 30.0f;
                 _contentmentBar.decayRate = -1.0f / 3.0f;
 
                 if (_gameStage >= 2) {
@@ -214,6 +245,8 @@ public class GameManager : MonoBehaviour {
                     _energyBar.decayRate = -0.25f;
                     _contentmentButton.gameObject.SetActive(true);
                     _contentmentButton.SetPressed();
+                    _healthBar.decayRate = 0.05f;
+                    _healthButton.timeoutPeriod = 2.0f;
                     _energyButton.autoPress = true;
                 }
                 break;
@@ -276,6 +309,7 @@ public class GameManager : MonoBehaviour {
                 _endButton.gameObject.SetActive(true);
                 _gameStage = 1;
                 _ascensionUnlocked = true;
+                _ascensionTime = 0.0f;
                 break;
         }
 
