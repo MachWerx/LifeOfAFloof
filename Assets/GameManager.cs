@@ -35,9 +35,10 @@ public class GameManager : MonoBehaviour {
     }
     private GameMode _gameMode;
 
-    private int _gameStage;
+    private int _gameStage = 1;
     private float _sunAngle = 0;
     private float _initialAtmosphereThickness;
+    private bool _ascensionUnlocked = false;
     private float kSunsetPeriod = 5.0f;
     private float kSunrisePeriod = 1.0f;
     private float kSunsetAngle = 120.0f;
@@ -82,6 +83,12 @@ public class GameManager : MonoBehaviour {
             _sunAngle = kSunsetAngle;
         }
 
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            // skip to the next section
+            _healthBar.value = .01f;
+        }
+
         if (_gameMode == GameMode.GameIntro) {
             _sunAngle -= Time.deltaTime * kSunsetAngle / kSunrisePeriod;
             if (_sunAngle < 0)  {
@@ -120,7 +127,10 @@ public class GameManager : MonoBehaviour {
 
         // deactivate everything unless we're about to start a game
         _mainMenu.SetActive(false);
+        _continueButton.gameObject.SetActive(false);
+        _revisitButton.gameObject.SetActive(false);
         _dialogBox.SetActive(false);
+        _endButton.gameObject.SetActive(false);
         _healthBar.gameObject.SetActive(false);
         _energyBar.gameObject.SetActive(false);
         _contentmentBar.gameObject.SetActive(false);
@@ -133,6 +143,12 @@ public class GameManager : MonoBehaviour {
         switch (mode) {
             case GameMode.Menu:
                 _mainMenu.SetActive(true);
+                if (_ascensionUnlocked) {
+                    _revisitButton.gameObject.SetActive(true);
+                }
+                if (_gameStage != 1) {
+                    _continueButton.gameObject.SetActive(true);
+                }
                 break;
             case GameMode.GameIntro:
                 _dialogBox.SetActive(true);
@@ -172,7 +188,8 @@ public class GameManager : MonoBehaviour {
                 _energyBar.value = 1;
                 _energyBar.decayRate = -1.0f;
                 _contentmentBar.value = 0;
-                _contentmentBar.decayRate = -1.0f / 30.0f;
+                //_contentmentBar.decayRate = -1.0f / 30.0f;
+                _contentmentBar.decayRate = -1.0f / 3.0f;
 
                 if (_gameStage >= 2) {
                     _healthButton.gameObject.SetActive(true);
@@ -212,8 +229,10 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case GameMode.GameEnding:
-                if (_gameStage == 6) {
+                if (_gameStage == 6)
+                {
                     SetGameMode(GameMode.Ascending);
+                    return;
                 }
                 break;
 
@@ -239,7 +258,9 @@ public class GameManager : MonoBehaviour {
                         break;
                 }
 
-                _gameStage += 1;
+                if (_gameStage < 6) {
+                    _gameStage += 1;
+                }
                 break;
 
             case GameMode.Ascending:
@@ -252,6 +273,9 @@ public class GameManager : MonoBehaviour {
                 _healthButton.gameObject.SetActive(false);
                 _energyButton.gameObject.SetActive(false);
                 _contentmentButton.gameObject.SetActive(false);
+                _endButton.gameObject.SetActive(true);
+                _gameStage = 1;
+                _ascensionUnlocked = true;
                 break;
         }
 
@@ -305,7 +329,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void OnRevisitButtonPressed() {
-        _gameStage = 10;
+        _gameStage = 6;
         SetGameMode(GameMode.GameIntro);
     }
 
