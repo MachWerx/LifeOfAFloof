@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour {
     private float kDayAtmosphereThickness = 0.5f;
     private float kSettingAtmosphereThickness = 1.25f;
 
+    private float _healthBoost = 0.1f;
+
     // Start is called before the first frame update
     void Start() {
         _newGameButton.OnButtonPressed += OnNewGameButtonPressed;
@@ -110,28 +112,57 @@ public class GameManager : MonoBehaviour {
             case GameMode.GameIntro:
                 _dialogBox.SetActive(true);
                 _dialogText.text =
-                    "You encounter a strange creature in your wanderings. Somehow you can sense two things:\n" +
+                    "You encounter a strange creature. Somehow you can sense two things:\n" +
                     "\n" +
                     "1) This is a \"floof\"\n" +
                     "2) They are dying";
                 _nextText.text = "Approach the floof";
                 break;
             case GameMode.GamePlaying:
+                _healthBar.gameObject.SetActive(true);
                 _healthBar.lifetime = 0;
                 _healthBar.value = 1;
                 _healthBar.decayRate = 0.2f;
-                _healthBar.gameObject.SetActive(true);
+                _healthButton.timeout = 0;
+                _healthButton.timeoutPeriod = 1.0f;
+                _healthButton.autoPress = false;
+                _healthBoost = 0.1f;
+
                 if (_gameStage >= 2) {
                     _healthButton.gameObject.SetActive(true);
                 }
+                if (_gameStage >= 3) {
+                    _healthButton.timeoutPeriod = 0.5f;
+                    _healthBoost = 0.07f;
+                }
+                if (_gameStage >= 3) {
+                    _healthButton.timeoutPeriod = 0.3f;
+                    _healthBoost = 0.05f;
+                }
+                if (_gameStage >= 4) {
+                    _healthButton.autoPress = true;
+                }
+
                 break;
             case GameMode.GameOutro:
                 _dialogBox.SetActive(true);
                 _dialogText.text = $"The floof has died. They lived for {_healthBar.lifetime.ToString("F2")} seconds. ";
-                if (_gameStage == 1) {
-                    _dialogText.text += "But now you are filled with the knowledge of what you could have done. If only you could go back in time.";
-                    _nextText.text = "Touch the floof's body";
+                _nextText.text = "Touch the floof's body";
+                switch (_gameStage) {
+                    case 1:
+                        _dialogText.text += "But now you are filled with the knowledge of what you could have done. If only you could go back in time.";
+                        break;
+                    case 2:
+                        _dialogText.text += "You have gained knowledge. You think you could comfort the floof more efficiently next time.";
+                        break;
+                    case 3:
+                        _dialogText.text += "You are beginning to feel like you can understand the floof. You feel their presence in your mind.";
+                        break;
+                    case 4:
+                        _dialogText.text += "You feel a sense of relaxation. You feel like you don't have to do anything for the moment.";
+                        break;
                 }
+
                 _gameStage += 1;
                 break;
         }
@@ -140,7 +171,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void OnHealthButtonPressed() {
-        _healthBar.value += 0.1f;
+        _healthBar.value += _healthBoost;
     }
 
     void OnGameOver()
