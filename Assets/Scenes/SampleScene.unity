@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 17869611}
   - component: {fileID: 17869610}
   - component: {fileID: 17869609}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 20997046}
   - component: {fileID: 20997045}
   - component: {fileID: 20997044}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,8 +409,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290690750
-  m_fontColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+    rgba: 4281910211
+  m_fontColor: {r: 0.764151, g: 0.7641509, b: 0.2198736, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -666,7 +666,7 @@ GameObject:
   - component: {fileID: 171091914}
   - component: {fileID: 171091913}
   - component: {fileID: 171091912}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cancel Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -970,7 +970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 300168193}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1095,7 +1095,7 @@ GameObject:
   m_Component:
   - component: {fileID: 468111655}
   - component: {fileID: 468111656}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cancel Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1130,6 +1130,113 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeoutPeriod: 1
+--- !u!1 &536645837
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 536645838}
+  - component: {fileID: 536645840}
+  - component: {fileID: 536645839}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &536645838
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536645837}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1687258585}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &536645839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536645837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+--- !u!20 &536645840
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536645837}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 23
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 8400000, guid: 908bb16cda98b41da9b709183179a44b, type: 2}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
 --- !u!1 &601441435
 GameObject:
   m_ObjectHideFlags: 0
@@ -1140,7 +1247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 601441436}
   - component: {fileID: 601441437}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Energy Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1188,7 +1295,7 @@ GameObject:
   - component: {fileID: 652773587}
   - component: {fileID: 652773586}
   - component: {fileID: 652773585}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Revisit Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1563,7 +1670,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 753585815}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1601,7 +1708,7 @@ GameObject:
   - component: {fileID: 760012134}
   - component: {fileID: 760012133}
   - component: {fileID: 760012132}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1697,7 +1804,7 @@ GameObject:
   - component: {fileID: 786651433}
   - component: {fileID: 786651432}
   - component: {fileID: 786651431}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2078,7 +2185,7 @@ GameObject:
   - component: {fileID: 1088762921}
   - component: {fileID: 1088762920}
   - component: {fileID: 1088762919}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2172,7 +2279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1116982971}
   - component: {fileID: 1116982972}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Contentment Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2380,7 +2487,7 @@ GameObject:
   - component: {fileID: 1260648498}
   - component: {fileID: 1260648497}
   - component: {fileID: 1260648496}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2492,7 +2599,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1290437558}
   - component: {fileID: 1290437559}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Energy Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2541,7 +2648,7 @@ GameObject:
   - component: {fileID: 1290481196}
   - component: {fileID: 1290481195}
   - component: {fileID: 1290481194}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Continue Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2738,7 +2845,7 @@ GameObject:
   - component: {fileID: 1297228890}
   - component: {fileID: 1297228889}
   - component: {fileID: 1297228888}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2835,7 +2942,7 @@ GameObject:
   - component: {fileID: 1402020870}
   - component: {fileID: 1402020869}
   - component: {fileID: 1402020868}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Next Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3185,7 +3292,7 @@ GameObject:
   - component: {fileID: 1515403426}
   - component: {fileID: 1515403425}
   - component: {fileID: 1515403424}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: New Game Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3519,7 +3626,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1673018853}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Dialog Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3667,6 +3774,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 753585815}
+  - {fileID: 536645838}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
@@ -3712,7 +3820,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1696777873}
   - component: {fileID: 1696777874}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Health Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3757,7 +3865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1727328584}
   - component: {fileID: 1727328585}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Contentment Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3804,7 +3912,7 @@ GameObject:
   - component: {fileID: 1781302798}
   - component: {fileID: 1781302797}
   - component: {fileID: 1781302796}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3897,7 +4005,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1793067399}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3933,7 +4041,7 @@ GameObject:
   - component: {fileID: 1841727217}
   - component: {fileID: 1841727216}
   - component: {fileID: 1841727215}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4093,7 +4201,7 @@ GameObject:
   - component: {fileID: 1926108744}
   - component: {fileID: 1926108743}
   - component: {fileID: 1926108742}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4249,7 +4357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2073548895}
   - component: {fileID: 2073548896}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4294,7 +4402,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2089411569}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Life Bars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
