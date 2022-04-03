@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour {
 
         _healthBar.OnBarDepleted += OnGameOver;
         _healthButton.OnButtonPressed += OnHealthButtonPressed;
+        _energyBar.OnBarDepleted += OnEnergyBarDepleted;
+        _energyButton.OnButtonPressed += OnEnergyButtonPressed;
 
         _gameMode = GameMode.GameOutro;
         SetGameMode(GameMode.Menu);
@@ -69,6 +71,12 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (Input.GetKeyDown(KeyCode.N)) {
+            // skip to the next section
+            _healthBar.value = 0;
+            _sunAngle = kSunsetAngle;
+        }
+
         if (_gameMode == GameMode.GameIntro) {
             _sunAngle -= Time.deltaTime * kSunsetAngle / kSunrisePeriod;
             if (_sunAngle < 0)  {
@@ -77,8 +85,7 @@ public class GameManager : MonoBehaviour {
             _sunAxis.transform.localEulerAngles = new Vector3(_sunAngle, 0, 0);
             float atmosphere = Mathf.Lerp(kDayAtmosphereThickness, kSettingAtmosphereThickness, _sunAngle / kSunsetAngle);
             RenderSettings.skybox.SetFloat("_AtmosphereThickness", atmosphere);
-        }
-        else if (_gameMode == GameMode.GameEnding) {
+        } else if (_gameMode == GameMode.GameEnding) {
             _sunAngle += Time.deltaTime * kSunsetAngle / kSunsetPeriod;
             if (_sunAngle >= kSunsetAngle) {
                 _sunAngle = kSunsetAngle;
@@ -87,6 +94,16 @@ public class GameManager : MonoBehaviour {
             _sunAxis.transform.localEulerAngles = new Vector3(_sunAngle, 0, 0);
             float atmosphere = Mathf.Lerp(kDayAtmosphereThickness, kSettingAtmosphereThickness, _sunAngle / kSunsetAngle);
             RenderSettings.skybox.SetFloat("_AtmosphereThickness", atmosphere);
+        } else if (_gameMode == GameMode.GamePlaying) {
+            if (_gameStage >= 5) {
+                if (_energyBar.value < 1.0f) {
+                    _healthBar.decayRate = 0.05f;
+                    _healthButton.timeoutPeriod = 2.0f;
+                } else {
+                    _healthBar.decayRate = 0.2f;
+                    _healthButton.timeoutPeriod = 0.5f;
+                }
+            }
         }
     }
 
@@ -132,7 +149,10 @@ public class GameManager : MonoBehaviour {
                         _dialogText.text = "The floof is connected to you. Think calming thoughts.";
                         break;
                     case 5:
-                        _dialogText.text = "Help ease the floof's mind when the time is right.";
+                        _dialogText.text = "Help ease the floof's mind.";
+                        break;
+                    case 6:
+                        _dialogText.text = "Breathe in and out with the floof's rhythm.";
                         break;
                 }
                 _nextText.text = "Approach the floof";
@@ -144,6 +164,10 @@ public class GameManager : MonoBehaviour {
                 _healthButton.timeoutPeriod = 1.0f;
                 _healthButton.autoPress = false;
                 _healthBoost = 0.1f;
+                _energyBar.value = 1;
+                _energyBar.decayRate = -1.0f;
+                _contentmentBar.value = 0;
+                _contentmentBar.decayRate = -1.0f / 30.0f;
 
                 if (_gameStage >= 2) {
                     _healthButton.gameObject.SetActive(true);
@@ -158,14 +182,20 @@ public class GameManager : MonoBehaviour {
                 if (_gameStage >= 5) {
                     _energyButton.gameObject.SetActive(true);
                 }
+                if (_gameStage >= 6) {
+                    _energyBar.decayRate = -0.25f;
+                    _contentmentButton.gameObject.SetActive(true);
+                    _energyButton.autoPress = true;
+                }
                 break;
 
             case GameMode.GamePlaying:
                 _healthBar.gameObject.SetActive(true);
                 if (_gameStage >= 5) {
                     _energyBar.gameObject.SetActive(true);
-                    _energyBar.value = 0;
-                    _energyBar.decayRate = -0.25f;
+                }
+                if (_gameStage >= 6) {
+                    _contentmentBar.gameObject.SetActive(true);
                 }
                 break;
 
@@ -181,13 +211,16 @@ public class GameManager : MonoBehaviour {
                         _dialogText.text += "But you feel like you have learned something from being in their presence.";
                         break;
                     case 2:
-                        _dialogText.text += "You could not save the floof but you have a better understanding of the floof's body.";
+                        _dialogText.text += "You could not save the floof but you have a better understanding of their body works.";
                         break;
                     case 3:
-                        _dialogText.text += "You start to feel a connection with the floof.";
+                        _dialogText.text += "You had started to feel a connection with the floof.";
                         break;
                     case 4:
-                        _dialogText.text += "You sense that the floof is trying to tell you something.";
+                        _dialogText.text += "You sense that the floof was trying to tell you something.";
+                        break;
+                    case 5:
+                        _dialogText.text += "You felt the presence of the floof in your mind.";
                         break;
                 }
 
@@ -202,8 +235,18 @@ public class GameManager : MonoBehaviour {
         _healthBar.value += _healthBoost;
     }
 
-    void OnGameOver()
-    {
+    void OnEnergyBarDepleted() {
+        _energyBar.decayRate = -Mathf.Abs(_energyBar.decayRate);
+    }
+
+    void OnEnergyButtonPressed() {
+        if (_energyBar.value == 1) {
+            _energyBar.value = 0.999f;
+            _energyBar.decayRate = Mathf.Abs(_energyBar.decayRate);
+        }
+    }
+
+    void OnGameOver() {
         SetGameMode(GameMode.GameEnding);
     }
 

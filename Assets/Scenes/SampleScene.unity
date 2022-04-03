@@ -151,7 +151,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 9311900}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5000001
   m_Height: 2
   m_Direction: 1
@@ -366,6 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -706,6 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -1133,6 +1135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -1287,6 +1290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 1290437559}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -1341,6 +1345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -1618,7 +1623,7 @@ SphereCollider:
   m_GameObject: {fileID: 668553853}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -1940,7 +1945,7 @@ SphereCollider:
   m_GameObject: {fileID: 838649643}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2035,7 +2040,7 @@ SphereCollider:
   m_GameObject: {fileID: 907446349}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2130,7 +2135,7 @@ SphereCollider:
   m_GameObject: {fileID: 915966993}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2431,7 +2436,7 @@ SphereCollider:
   m_GameObject: {fileID: 1211519505}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2530,6 +2535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -2698,6 +2704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -2994,6 +3001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -3346,6 +3354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -3704,7 +3713,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be76e5f14cfee674cb30b491fb72b09b, type: 3}
   m_Name: 
@@ -3872,6 +3881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 0}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0
@@ -3919,6 +3929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b622798958de24e8e99d061cfcbd2604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedBar: {fileID: 1116982972}
   timeout: 0
   timeoutPeriod: 1
   autoPress: 0

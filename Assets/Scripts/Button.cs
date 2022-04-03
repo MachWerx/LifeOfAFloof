@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 public class Button : MonoBehaviour {
+    [SerializeField] private Bar _linkedBar;
     public float timeout = 0;
     public float timeoutPeriod = 1.0f;
     public bool autoPress = false;
@@ -27,19 +28,35 @@ public class Button : MonoBehaviour {
 
     private void OnEnable()
     {
-        timeout = 1;
-        _buttonPressed = false;
         _buttonPressQueued = false;
-        transform.localPosition = _initialPos;
-        if (_material.HasProperty("_EmissionColor")) {
-            _material.SetColor("_EmissionColor", _initialColor);
-        }
+
+        //if (_linkedBar == null) {
+            timeout = 1;
+            _buttonPressed = false;
+            transform.localPosition = _initialPos;
+            if (_material.HasProperty("_EmissionColor")) {
+                _material.SetColor("_EmissionColor", _initialColor);
+            }
+        //} else {
+        //    timeout = 0;
+        //    _buttonPressed = true;
+        //    transform.localPosition = _pressedPos;
+        //    if (_material.HasProperty("_EmissionColor")) {
+        //        _material.SetColor("_EmissionColor", Color.black);
+        //    }
+        //}
+
     }
 
     // Update is called once per frame
     void Update() {
         if (_buttonPressed) {
-            timeout += Time.deltaTime / timeoutPeriod;
+            if (_linkedBar == null) {
+                timeout += Time.deltaTime / timeoutPeriod;
+            } else {
+                timeout = _linkedBar.value;
+            }
+
             transform.localPosition = Vector3.Lerp(_pressedPos, _initialPos, timeout);
             if (_material.HasProperty("_EmissionColor")) {
                 _material.SetColor("_EmissionColor", 0.5f * timeout * _initialColor);
@@ -74,9 +91,11 @@ public class Button : MonoBehaviour {
             } else {
                 _buttonPressed = true;
                 _buttonPressQueued = false;
-                timeout = 0;
-                transform.localPosition = _pressedPos;
-                _material.SetColor("_EmissionColor", Color.black);
+                if (_linkedBar == null) {
+                    timeout = 0;
+                    transform.localPosition = _pressedPos;
+                    _material.SetColor("_EmissionColor", Color.black);
+                }
                 OnButtonPressed?.Invoke();
             }
         }
