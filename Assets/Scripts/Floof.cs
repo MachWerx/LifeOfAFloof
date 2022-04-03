@@ -31,8 +31,8 @@ public class Floof : MonoBehaviour
             materialAndColor.Item1.color = _healthBar.value * materialAndColor.Item2;
         }
 
-        // check for click
-        if (Input.GetMouseButtonDown(0) && !_isJumping) {
+        // check for jump
+        if (Input.GetMouseButtonDown(0) && !_isJumping && _healthBar.value > 0) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)) {

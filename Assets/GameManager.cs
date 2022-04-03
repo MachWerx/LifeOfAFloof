@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
     private int _gameStage;
     private float _sunAngle = 0;
     private float _initialAtmosphereThickness;
-    private float kSunsetPeriod = 3.0f;
+    private float kSunsetPeriod = 5.0f;
     private float kSunrisePeriod = 1.0f;
     private float kSunsetAngle = 120.0f;
     private float kDayAtmosphereThickness = 0.5f;
@@ -78,10 +78,11 @@ public class GameManager : MonoBehaviour {
             float atmosphere = Mathf.Lerp(kDayAtmosphereThickness, kSettingAtmosphereThickness, _sunAngle / kSunsetAngle);
             RenderSettings.skybox.SetFloat("_AtmosphereThickness", atmosphere);
         }
-        else if (_gameMode == GameMode.GameOutro) {
+        else if (_gameMode == GameMode.GameEnding) {
             _sunAngle += Time.deltaTime * kSunsetAngle / kSunsetPeriod;
-            if (_sunAngle > kSunsetAngle) {
+            if (_sunAngle >= kSunsetAngle) {
                 _sunAngle = kSunsetAngle;
+                SetGameMode(GameMode.GameOutro);
             }
             _sunAxis.transform.localEulerAngles = new Vector3(_sunAngle, 0, 0);
             float atmosphere = Mathf.Lerp(kDayAtmosphereThickness, kSettingAtmosphereThickness, _sunAngle / kSunsetAngle);
@@ -148,6 +149,9 @@ public class GameManager : MonoBehaviour {
                 _healthBar.gameObject.SetActive(true);
                 break;
 
+            case GameMode.GameEnding:
+                break;
+
             case GameMode.GameOutro:
                 _dialogBox.SetActive(true);
                 _dialogText.text = $"The floof has died. They lived for {_healthBar.lifetime.ToString("F2")} seconds. ";
@@ -180,7 +184,7 @@ public class GameManager : MonoBehaviour {
 
     void OnGameOver()
     {
-        SetGameMode(GameMode.GameOutro);
+        SetGameMode(GameMode.GameEnding);
     }
 
     void OnNewGameButtonPressed() {
