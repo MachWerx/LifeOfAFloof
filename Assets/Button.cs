@@ -25,6 +25,17 @@ public class Button : MonoBehaviour {
         }
     }
 
+    private void OnEnable()
+    {
+        timeout = 1;
+        _buttonPressed = false;
+        _buttonPressQueued = false;
+        transform.localPosition = _initialPos;
+        if (_material.HasProperty("_EmissionColor")) {
+            _material.SetColor("_EmissionColor", _initialColor);
+        }
+    }
+
     // Update is called once per frame
     void Update() {
         if (_buttonPressed) {

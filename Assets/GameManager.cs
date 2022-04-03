@@ -95,15 +95,17 @@ public class GameManager : MonoBehaviour {
             return;
         }
 
-        // deactivate everything
+        // deactivate everything unless we're about to start a game
         _mainMenu.SetActive(false);
         _dialogBox.SetActive(false);
         _healthBar.gameObject.SetActive(false);
         _energyBar.gameObject.SetActive(false);
         _contentmentBar.gameObject.SetActive(false);
-        _healthButton.gameObject.SetActive(false);
-        _energyButton.gameObject.SetActive(false);
-        _contentmentButton.gameObject.SetActive(false);
+        if (mode != GameMode.GamePlaying) {
+            _healthButton.gameObject.SetActive(false);
+            _energyButton.gameObject.SetActive(false);
+            _contentmentButton.gameObject.SetActive(false);
+        }
 
         switch (mode) {
             case GameMode.Menu:
@@ -117,9 +119,7 @@ public class GameManager : MonoBehaviour {
                     "1) This is a \"floof\"\n" +
                     "2) They are dying";
                 _nextText.text = "Approach the floof";
-                break;
-            case GameMode.GamePlaying:
-                _healthBar.gameObject.SetActive(true);
+
                 _healthBar.lifetime = 0;
                 _healthBar.value = 1;
                 _healthBar.decayRate = 0.2f;
@@ -135,15 +135,19 @@ public class GameManager : MonoBehaviour {
                     _healthButton.timeoutPeriod = 0.5f;
                     _healthBoost = 0.07f;
                 }
-                if (_gameStage >= 3) {
+                if (_gameStage >= 4) {
                     _healthButton.timeoutPeriod = 0.3f;
                     _healthBoost = 0.05f;
                 }
-                if (_gameStage >= 4) {
+                if (_gameStage >= 5) {
                     _healthButton.autoPress = true;
                 }
-
                 break;
+
+            case GameMode.GamePlaying:
+                _healthBar.gameObject.SetActive(true);
+                break;
+
             case GameMode.GameOutro:
                 _dialogBox.SetActive(true);
                 _dialogText.text = $"The floof has died. They lived for {_healthBar.lifetime.ToString("F2")} seconds. ";
