@@ -114,11 +114,27 @@ public class GameManager : MonoBehaviour {
                 break;
             case GameMode.GameIntro:
                 _dialogBox.SetActive(true);
-                _dialogText.text =
-                    "You encounter a strange creature. Somehow you can sense two things:\n" +
-                    "\n" +
-                    "1) This is a \"floof\"\n" +
-                    "2) They are dying";
+                switch (_gameStage) {
+                    case 1:
+                        _dialogText.text =
+                            "You encounter a strange creature. Somehow you can sense two things:\n" +
+                            "\n" +
+                            "1) This is a \"floof\"\n" +
+                            "2) They are dying";
+                        break;
+                    case 2:
+                        _dialogText.text = "Time has suddenly rewinded. This time you feel like you could help the floof.";
+                        break;
+                    case 3:
+                        _dialogText.text = "You think you could be more effective this time.";
+                        break;
+                    case 4:
+                        _dialogText.text = "The floof is connected to you. Think calming thoughts.";
+                        break;
+                    case 5:
+                        _dialogText.text = "Help ease the floof's mind when the time is right.";
+                        break;
+                }
                 _nextText.text = "Approach the floof";
 
                 _healthBar.lifetime = 0;
@@ -137,16 +153,20 @@ public class GameManager : MonoBehaviour {
                     _healthBoost = 0.07f;
                 }
                 if (_gameStage >= 4) {
-                    _healthButton.timeoutPeriod = 0.3f;
-                    _healthBoost = 0.05f;
+                    _healthButton.autoPress = true;
                 }
                 if (_gameStage >= 5) {
-                    _healthButton.autoPress = true;
+                    _energyButton.gameObject.SetActive(true);
                 }
                 break;
 
             case GameMode.GamePlaying:
                 _healthBar.gameObject.SetActive(true);
+                if (_gameStage >= 5) {
+                    _energyBar.gameObject.SetActive(true);
+                    _energyBar.value = 0;
+                    _energyBar.decayRate = -0.25f;
+                }
                 break;
 
             case GameMode.GameEnding:
@@ -154,20 +174,20 @@ public class GameManager : MonoBehaviour {
 
             case GameMode.GameOutro:
                 _dialogBox.SetActive(true);
-                _dialogText.text = $"The floof has died. They lived for {_healthBar.lifetime.ToString("F2")} seconds. ";
+                _dialogText.text = $"The floof lived for {_healthBar.lifetime.ToString("F2")} seconds.\n\n";
                 _nextText.text = "Touch the floof's body";
                 switch (_gameStage) {
                     case 1:
-                        _dialogText.text += "But now you are filled with the knowledge of what you could have done. If only you could go back in time.";
+                        _dialogText.text += "But you feel like you have learned something from being in their presence.";
                         break;
                     case 2:
-                        _dialogText.text += "You have gained knowledge. You think you could comfort the floof more efficiently next time.";
+                        _dialogText.text += "You could not save the floof but you have a better understanding of the floof's body.";
                         break;
                     case 3:
-                        _dialogText.text += "You are beginning to feel like you can understand the floof. You feel their presence in your mind.";
+                        _dialogText.text += "You start to feel a connection with the floof.";
                         break;
                     case 4:
-                        _dialogText.text += "You feel a sense of relaxation. You feel like you don't have to do anything for the moment.";
+                        _dialogText.text += "You sense that the floof is trying to tell you something.";
                         break;
                 }
 
