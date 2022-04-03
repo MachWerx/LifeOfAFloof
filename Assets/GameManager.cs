@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private GameObject _mainMenu;
     [SerializeField] private GameObject _dialogBox;
     [SerializeField] private TMPro.TextMeshPro _dialogText;
+    [SerializeField] private TMPro.TextMeshPro _nextText;
 
     [SerializeField] private Bar _healthBar;
     [SerializeField] private Bar _energyBar;
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour {
                     "\n" +
                     "1) This is a \"floof\"\n" +
                     "2) They are dying";
+                _nextText.text = "Approach the floof";
                 break;
             case GameMode.GamePlaying:
                 _healthBar.lifetime = 0;
@@ -91,7 +93,11 @@ public class GameManager : MonoBehaviour {
                 break;
             case GameMode.GameOutro:
                 _dialogBox.SetActive(true);
-                _dialogText.text = $"The floof has died. They lived for {_healthBar.lifetime.ToString("F2")} seconds.";
+                _dialogText.text = $"The floof has died. They lived for {_healthBar.lifetime.ToString("F2")} seconds. ";
+                if (_gameStage == 1) {
+                    _dialogText.text += "But now you are filled with the knowledge of what you could have done. If only you could go back in time.";
+                    _nextText.text = "Touch the floof's body";
+                }
                 _gameStage += 1;
                 break;
         }
@@ -132,6 +138,8 @@ public class GameManager : MonoBehaviour {
 
     void OnCancelButtonPressed() {
         if (_gameMode == GameMode.GameIntro) {
+            SetGameMode(GameMode.Menu);
+        } else if (_gameMode == GameMode.GameOutro) {
             SetGameMode(GameMode.Menu);
         }
     }
