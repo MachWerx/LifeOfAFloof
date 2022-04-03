@@ -11,6 +11,8 @@ public class Bar : MonoBehaviour {
             _value = Mathf.Clamp01(value);
             if (_value == 0) {
                 OnBarDepleted?.Invoke();
+            } else if (_value == 1) {
+                OnBarFull?.Invoke();
             }
             Vector3 scale = transform.localScale;
             scale.x = _value * _initialLength;
@@ -19,6 +21,7 @@ public class Bar : MonoBehaviour {
         }
     }
     public Action OnBarDepleted;
+    public Action OnBarFull;
 
     private float _value;
     private Material _material;

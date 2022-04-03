@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private Button _revisitButton;
     [SerializeField] private Button _nextButton;
     [SerializeField] private Button _cancelButton;
+    [SerializeField] private Button _endButton;
 
     [SerializeField] private GameObject _mainMenu;
     [SerializeField] private GameObject _dialogBox;
@@ -27,10 +28,10 @@ public class GameManager : MonoBehaviour {
     private enum GameMode {
         Menu,
         GameIntro,
-        GameStarting,
         GamePlaying,
         GameEnding,
-        GameOutro
+        GameOutro,
+        Ascending,
     }
     private GameMode _gameMode;
 
@@ -52,11 +53,15 @@ public class GameManager : MonoBehaviour {
         _revisitButton.OnButtonPressed += OnRevisitButtonPressed;
         _nextButton.OnButtonPressed += OnNextButtonPressed;
         _cancelButton.OnButtonPressed += OnCancelButtonPressed;
+        _endButton.OnButtonPressed += OnEndButtonPressed;
 
         _healthBar.OnBarDepleted += OnGameOver;
         _healthButton.OnButtonPressed += OnHealthButtonPressed;
         _energyBar.OnBarDepleted += OnEnergyBarDepleted;
         _energyButton.OnButtonPressed += OnEnergyButtonPressed;
+        _contentmentButton.OnButtonPressed += OnContentmentButtonPressed;
+
+        _contentmentBar.OnBarFull += OnContentmentBarFull;
 
         _gameMode = GameMode.GameOutro;
         SetGameMode(GameMode.Menu);
@@ -171,6 +176,9 @@ public class GameManager : MonoBehaviour {
 
                 if (_gameStage >= 2) {
                     _healthButton.gameObject.SetActive(true);
+                    if (_gameStage == 2) {
+                        _healthButton.Flash();
+                    }
                 }
                 if (_gameStage >= 3) {
                     _healthButton.timeoutPeriod = 0.5f;
@@ -181,10 +189,14 @@ public class GameManager : MonoBehaviour {
                 }
                 if (_gameStage >= 5) {
                     _energyButton.gameObject.SetActive(true);
+                    if (_gameStage == 5) {
+                        _energyButton.Flash();
+                    }
                 }
                 if (_gameStage >= 6) {
                     _energyBar.decayRate = -0.25f;
                     _contentmentButton.gameObject.SetActive(true);
+                    _contentmentButton.SetPressed();
                     _energyButton.autoPress = true;
                 }
                 break;
@@ -200,6 +212,9 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case GameMode.GameEnding:
+                if (_gameStage == 6) {
+                    SetGameMode(GameMode.Ascending);
+                }
                 break;
 
             case GameMode.GameOutro:
@@ -226,6 +241,18 @@ public class GameManager : MonoBehaviour {
 
                 _gameStage += 1;
                 break;
+
+            case GameMode.Ascending:
+                // fade out all the UI
+                _mainMenu.SetActive(false);
+                _dialogBox.SetActive(false);
+                _healthBar.gameObject.SetActive(false);
+                _energyBar.gameObject.SetActive(false);
+                _contentmentBar.gameObject.SetActive(false);
+                _healthButton.gameObject.SetActive(false);
+                _energyButton.gameObject.SetActive(false);
+                _contentmentButton.gameObject.SetActive(false);
+                break;
         }
 
         _gameMode = mode;
@@ -243,6 +270,24 @@ public class GameManager : MonoBehaviour {
         if (_energyBar.value == 1) {
             _energyBar.value = 0.999f;
             _energyBar.decayRate = Mathf.Abs(_energyBar.decayRate);
+        }
+    }
+
+    void OnContentmentBarFull() {
+        _contentmentButton.Flash();
+    }
+
+    void OnContentmentButtonPressed() {
+        _contentmentBar.value = 0.999f;
+        _contentmentBar.decayRate = 0;
+
+        SetGameMode(GameMode.Ascending);
+    }
+
+    void OnEndButtonPressed()
+    {
+        if (_gameMode == GameMode.Ascending) {
+            SetGameMode(GameMode.Menu);
         }
     }
 

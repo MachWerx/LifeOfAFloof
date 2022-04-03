@@ -12,17 +12,22 @@ public class Button : MonoBehaviour {
     private Transform _collisionTransform;
     private Vector3 _initialPos;
     private Vector3 _pressedPos;
+    private Vector3 _initialScale;
     private Color _initialColor;
     private bool _buttonPressed;
     private bool _buttonPressQueued;
+    private bool _buttonFlashing;
+    private float _flashTime;
+    private float kFlashPeriod = 1.0f;
 
     private void Awake() {
         _material = GetComponentInChildren<Renderer>().material;
         _collisionTransform = GetComponentInChildren<Collider>().transform;
         _initialPos = transform.localPosition;
         _pressedPos = _initialPos + 0.1f * Vector3.forward;
+        _initialScale = transform.localScale;
         if (_material.HasProperty("_EmissionColor")) {
-           _initialColor = _material.GetColor("_EmissionColor");
+            _initialColor = _material.GetColor("_EmissionColor");
         }
     }
 
@@ -30,26 +35,37 @@ public class Button : MonoBehaviour {
     {
         _buttonPressQueued = false;
 
-        //if (_linkedBar == null) {
-            timeout = 1;
-            _buttonPressed = false;
-            transform.localPosition = _initialPos;
-            if (_material.HasProperty("_EmissionColor")) {
-                _material.SetColor("_EmissionColor", _initialColor);
-            }
-        //} else {
-        //    timeout = 0;
-        //    _buttonPressed = true;
-        //    transform.localPosition = _pressedPos;
-        //    if (_material.HasProperty("_EmissionColor")) {
-        //        _material.SetColor("_EmissionColor", Color.black);
-        //    }
-        //}
+        timeout = 1;
+        _buttonPressed = false;
+        transform.localPosition = _initialPos;
+        if (_material.HasProperty("_EmissionColor")) {
+            _material.SetColor("_EmissionColor", _initialColor);
+        }
 
+        _buttonFlashing = false;
+        _flashTime = 0;
+    }
+
+    public void SetPressed() {
+        timeout = 0;
+        _buttonPressed = true;
+        transform.localPosition = _pressedPos;
+        if (_material.HasProperty("_EmissionColor"))
+        {
+            _material.SetColor("_EmissionColor", Color.black);
+        }
     }
 
     // Update is called once per frame
     void Update() {
+        if (_buttonFlashing) {
+            _flashTime += Time.deltaTime;
+            if (_flashTime > kFlashPeriod) {
+                _flashTime -= kFlashPeriod;
+            }
+            transform.localScale = _initialScale * (1.0f + 0.1f * Mathf.Sin(_flashTime * 2.0f * Mathf.PI / kFlashPeriod));
+        }
+
         if (_buttonPressed) {
             if (_linkedBar == null) {
                 timeout += Time.deltaTime / timeoutPeriod;
@@ -91,6 +107,8 @@ public class Button : MonoBehaviour {
             } else {
                 _buttonPressed = true;
                 _buttonPressQueued = false;
+                _buttonFlashing = false;
+                transform.localScale = _initialScale;
                 if (_linkedBar == null) {
                     timeout = 0;
                     transform.localPosition = _pressedPos;
@@ -99,5 +117,14 @@ public class Button : MonoBehaviour {
                 OnButtonPressed?.Invoke();
             }
         }
+    }
+
+    public void Flash() {
+        if (_buttonFlashing) {
+            // button already flashing
+            return;
+        }
+        _buttonFlashing = true;
+        _flashTime = 0;
     }
 }
