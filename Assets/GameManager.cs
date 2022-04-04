@@ -82,17 +82,17 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKeyDown(KeyCode.N)) {
-            // skip to the next section
-            _healthBar.value = 0;
-            _sunAngle = kSunsetAngle;
-        }
+        //if (Input.GetKeyDown(KeyCode.N)) {
+        //    // skip to the next section
+        //    _healthBar.value = 0;
+        //    _sunAngle = kSunsetAngle;
+        //}
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            // skip to the next section
-            _healthBar.value = .01f;
-        }
+        //if (Input.GetKeyDown(KeyCode.M))
+        //{
+        //    // skip to the next section
+        //    _healthBar.value = .01f;
+        //}
 
         if (_gameMode == GameMode.GameIntro) {
             _sunAngle -= Time.deltaTime * kSunsetAngle / kSunrisePeriod;
@@ -220,7 +220,7 @@ public class GameManager : MonoBehaviour {
                 _energyBar.value = 1;
                 _energyBar.decayRate = -1.0f;
                 _contentmentBar.value = 0;
-                _contentmentBar.decayRate = -1.0f / 3.0f;
+                _contentmentBar.decayRate = -1.0f / 30.0f;
 
                 if (_gameStage >= 2) {
                     _healthButton.gameObject.SetActive(true);
